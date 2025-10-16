@@ -3,740 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stages of Explicit Teaching</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .game-area {
-            display: flex;
-            min-height: 80vh;
-        }
-
-        .scenarios-section {
-            flex: 1;
-            padding: 30px;
-            background: #f8f9fa;
-            border-right: 3px solid #e9ecef;
-        }
-
-        .drop-zones-section {
-            flex: 1.2;
-            padding: 30px;
-            background: #ffffff;
-        }
-
-        .section-title {
-            font-size: 1.5em;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        .scenario-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            cursor: grab;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .scenario-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            border-color: #3498db;
-        }
-
-        .scenario-card.dragging {
-            opacity: 0.7;
-            transform: rotate(5deg);
-            cursor: grabbing;
-        }
-
-        .scenario-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .scenario-number {
-            background: #3498db;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .scenario-title {
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 1.1em;
-        }
-
-        .scenario-content {
-            color: #555;
-            line-height: 1.6;
-            margin-top: 10px;
-        }
-
-        .scenario-content ul {
-            padding-left: 0;
-            list-style: none;
-        }
-
-        .scenario-content li {
-            padding: 3px 0;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .scenario-content li:before {
-            content: "•";
-            color: #3498db;
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .nav-button {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        .nav-button:hover:not(:disabled) {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .nav-button:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .shuffle-button {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        .shuffle-button:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .scenario-counter {
-            background: #34495e;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-
-        .drop-zones-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .drop-column {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px dashed #dee2e6;
-        }
-
-        .drop-column h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            font-size: 1.3em;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
-        }
-
-        .drop-zone {
-            background: white;
-            border: 2px dashed #bdc3c7;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #7f8c8d;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .drop-zone.highlight {
-            border-color: #3498db;
-            background: #ebf3fd;
-            transform: scale(1.02);
-        }
-
-        .drop-zone.filled {
-            border-color: #27ae60;
-            background: #d5f4e6;
-            color: #2c3e50;
-        }
-
-        .drop-zone.filled .scenario-card {
-            margin: 0;
-            width: 100%;
-            cursor: default;
-        }
-
-        .progress-bar {
-            background: #ecf0f1;
-            height: 8px;
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #27ae60, #2ecc71);
-            height: 100%;
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 10px;
-            color: #7f8c8d;
-            font-weight: 500;
-        }
-
-        .completion-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #27ae60;
-            color: white;
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-            font-size: 1.3em;
-            z-index: 1000;
-            display: none;
-        }
-
-        .completion-message.show {
-            display: block;
-            animation: completionPop 0.5s ease-out;
-        }
-
-        @keyframes completionPop {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
-        .feedback {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            z-index: 1000;
-            display: none;
-        }
-
-        .feedback.correct {
-            background: #27ae60;
-        }
-
-        .feedback.incorrect {
-            background: #e74c3c;
-        }
-
-        .feedback.show {
-            display: block;
-            animation: feedbackSlide 0.3s ease-out;
-        }
-
-        @keyframes feedbackSlide {
-            0% { transform: translateX(100%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-            .game-area {
-                flex-direction: column;
-            }
-
-            .scenarios-section {
-                border-right: none;
-                border-bottom: 3px solid #e9ecef;
-            }
-
-            .drop-zones-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Stages of Explicit Teaching - Matching Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <header>
             <h1>Stages of Explicit Teaching</h1>
-            <p>Drag scenarios to their corresponding teaching stages</p>
-        </div>
-
-        <div class="game-area">
-            <div class="scenarios-section">
-                <h2 class="section-title">Scenarios</h2>
-                <div id="scenarioContainer">
-                    <!-- Scenarios will be loaded here -->
-                </div>
-
-                <div class="navigation">
-                    <button id="prevBtn" class="nav-button">← Previous</button>
-                    <div class="scenario-counter">
-                        <span id="currentScenario">1</span> of <span id="totalScenarios">10</span>
-                    </div>
-                    <button id="nextBtn" class="nav-button">Next →</button>
-                </div>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <button id="shuffleBtn" class="shuffle-button">🔀 Shuffle Scenarios</button>
-                </div>
-            </div>
-
-            <div class="drop-zones-section">
-                <h2 class="section-title">Teaching Stages</h2>
-
+            <div class="progress-container">
                 <div class="progress-bar">
-                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="progress-text">
-                    <span id="progressText">0 of 10 scenarios matched</span>
-                </div>
+                <span class="progress-text" id="progressText">0/10 matches completed</span>
+            </div>
+        </header>
 
-                <div class="drop-zones-grid">
-                    <div class="drop-column">
+        <main class="game-container">
+            <!-- Left side - Scenarios -->
+            <section class="scenarios-section">
+                <div class="scenarios-header">
+                    <h2>Scenarios</h2>
+                    <button class="btn btn--secondary" id="shuffleBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12h18m-9-9l9 9-9 9"></path>
+                            <path d="M21 12c0 1.657-4.03 3-9 3s-9-1.343-9-3"></path>
+                        </svg>
+                        Shuffle Scenarios
+                    </button>
+                </div>
+                <div class="scenario-card-container">
+                    <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous scenario">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15,18 9,12 15,6"></polyline>
+                        </svg>
+                    </button>
+                    
+                    <div class="scenario-card" id="scenarioCard" draggable="true">
+                        <div class="scenario-header">
+                            <span class="scenario-number" id="scenarioNumber">Scenario 1</span>
+                            <span class="scenario-subject" id="scenarioSubject">Year 6 Visual Art lesson</span>
+                        </div>
+                        <div class="scenario-content" id="scenarioContent">
+                            <!-- Content will be populated by JavaScript -->
+                        </div>
+                        <div class="drag-hint">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            Drag to match with a stage
+                        </div>
+                    </div>
+                    
+                    <button class="nav-btn next-btn" id="nextBtn" aria-label="Next scenario">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="remaining-count" id="remainingCount">
+                    10 scenarios remaining
+                </div>
+            </section>
+
+            <!-- Right side - Drop zones -->
+            <section class="drop-zones-section">
+                <h2>Teaching Stages</h2>
+                <div class="drop-zones-container">
+                    <div class="examples-column">
                         <h3>Examples</h3>
-                        <div class="drop-zone" data-stage="Review prior learning - Example">
-                            Review prior learning - Example
+                        <div class="drop-zone example" data-stage="Review prior learning - Example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Review prior learning</span>
+                                <span class="stage-type example-badge">Example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
                         </div>
-                        <div class="drop-zone" data-stage="Present new learning - Example">
-                            Present new learning - Example
-                        </div>
-                        <div class="drop-zone" data-stage="Guided practice - Example">
-                            Guided practice - Example
-                        </div>
-                        <div class="drop-zone" data-stage="Purposeful practice - Example">
-                            Purposeful practice - Example
-                        </div>
-                        <div class="drop-zone" data-stage="Ongoing review of learning - Example">
-                            Ongoing review of learning - Example
-                        </div>
-                    </div>
 
-                    <div class="drop-column">
-                        <h3>Non-Examples</h3>
-                        <div class="drop-zone" data-stage="Review prior learning - Non-example">
-                            Review prior learning - Non-example
+                        <div class="drop-zone example" data-stage="Present new learning - Example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Present new learning</span>
+                                <span class="stage-type example-badge">Example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
                         </div>
-                        <div class="drop-zone" data-stage="Present new learning - Non-example">
-                            Present new learning - Non-example
+
+                        <div class="drop-zone example" data-stage="Guided practice - Example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Guided practice</span>
+                                <span class="stage-type example-badge">Example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
                         </div>
-                        <div class="drop-zone" data-stage="Guided practice - Non-example">
-                            Guided practice - Non-example
+
+                        <div class="drop-zone example" data-stage="Purposeful practice - Example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Purposeful practice</span>
+                                <span class="stage-type example-badge">Example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
                         </div>
-                        <div class="drop-zone" data-stage="Purposeful practice - Non-example">
-                            Purposeful practice - Non-example
-                        </div>
-                        <div class="drop-zone" data-stage="Ongoing review of learning - Non-example">
-                            Ongoing review of learning - Non-example
+
+                        <div class="drop-zone example" data-stage="Ongoing review of learning - Example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Ongoing review of learning</span>
+                                <span class="stage-type example-badge">Example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
                         </div>
                     </div>
+                    
+                    <div class="non-examples-column">
+                        <h3>Non-examples</h3>
+                        
+                        <div class="drop-zone non-example" data-stage="Review prior learning - Non-example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Review prior learning</span>
+                                <span class="stage-type non-example-badge">Non-example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
+                        </div>
+                        
+                        <div class="drop-zone non-example" data-stage="Present new learning - Non-example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Present new learning</span>
+                                <span class="stage-type non-example-badge">Non-example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
+                        </div>
+                        
+                        <div class="drop-zone non-example" data-stage="Guided practice - Non-example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Guided practice</span>
+                                <span class="stage-type non-example-badge">Non-example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
+                        </div>
+                        
+                        <div class="drop-zone non-example" data-stage="Purposeful practice - Non-example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Purposeful practice</span>
+                                <span class="stage-type non-example-badge">Non-example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
+                        </div>
+                        
+                        <div class="drop-zone non-example" data-stage="Ongoing review of learning - Non-example">
+                            <div class="drop-zone-header">
+                                <span class="stage-name">Ongoing review of learning</span>
+                                <span class="stage-type non-example-badge">Non-example</span>
+                            </div>
+                            <div class="drop-zone-content">
+                                <div class="empty-state">Drop scenario here</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Completion Modal -->
+        <div class="completion-modal" id="completionModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🎉 Congratulations!</h2>
+                </div>
+                <div class="modal-body">
+                    <p>You have successfully matched all scenarios with their corresponding stages of explicit teaching!</p>
+                    <p>This activity has helped reinforce your understanding of how each stage should be implemented with appropriate examples and what to avoid in non-examples.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn--primary" onclick="location.reload()">Play Again</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div id="feedback" class="feedback"></div>
-    <div id="completionMessage" class="completion-message">
-        🎉 Congratulations! You've successfully matched all scenarios! 🎉
-    </div>
-
-    <script>
-        // Game data
-        const scenarios = [
-            {
-                id: 1,
-                title: "Year 6 Visual Art lesson",
-                content: `• Students are shown a range of five images and a list of ten descriptive words (translated into relevant languages).
-• Appropriate time is given for students to look at and comment on each image and the teacher asks students to build on each other's ideas.
-• The teacher reads through the list of descriptive words and explains each one.
-• Students use a device with the text-to-talk function to match a descriptive word with an image.
-• Students complete a pair-and-share activity (paired with a peer of like ability) to explain their choices.`,
-                correctMatch: "Review prior learning - Example"
-            },
-            {
-                id: 2,
-                title: "Year 6 Visual Art lesson",
-                content: `• Descriptive words are only provided in English.
-• It is assumed all students understand the meaning of the descriptive words.
-• Students all complete the task as a matching activity on a printout.
-• Student pairings are random.`,
-                correctMatch: "Review prior learning - Non-example"
-            },
-            {
-                id: 3,
-                title: "Year 10 Maths lesson",
-                content: `• Teacher introduces and explains a complex algebraic concept.
-• Teacher provides multiple illustrations of its practical application.
-• Teacher works through a variety of examples, each increasing in complexity.
-• Students use an online quiz on devices with relevant accessibility features to check for understanding.
-• Teacher aide is observing and watching for student engagement and understanding.`,
-                correctMatch: "Present new learning - Example"
-            },
-            {
-                id: 4,
-                title: "Year 10 Maths lesson",
-                content: `• Students who have demonstrated a lower level of readiness for the new learning are taught separately by a teacher aide.
-• These students are presented with different learning intentions and success criteria.`,
-                correctMatch: "Present new learning - Non-example"
-            },
-            {
-                id: 5,
-                title: "Year 8 History lesson",
-                content: `• Students watch a video (with captions) on a particular topic.
-• Students are provided with a graphic organiser (digital or paper) that requires them to construct a timeline of events.
-• The video is stopped at key points and students are asked a range of questions that increase in complexity to direct the construction of the timeline.
-• Students add to the timeline in a way of their choosing (sentences, dot points, images).
-• Students are invited to analyse the impact of each event on the next event and add this to their timeline as they are constructing it.`,
-                correctMatch: "Guided practice - Example"
-            },
-            {
-                id: 6,
-                title: "Year 8 History lesson",
-                content: `• After checking for understanding at the end of the guided practice, some students do not have the content knowledge to move to purposeful practice. All students are retaught the new content using different strategies.`,
-                correctMatch: "Guided practice - Non-example"
-            },
-            {
-                id: 7,
-                title: "Year 9 Economics and Business/Commerce lesson",
-                content: `• Teachers provide students with a range of resources exploring Australia's key trade routes (including digital) that include images, texts and video.
-• Students identify key trade routes on a global map and explain and justify why they are important.`,
-                correctMatch: "Purposeful practice - Example"
-            },
-            {
-                id: 8,
-                title: "Year 9 Economics and Business/Commerce lesson",
-                content: `• Students are provided with a single resource exploring Australia's key trade routes.
-• Students identify key trade routes on a global map and explain why they are important.`,
-                correctMatch: "Purposeful practice - Non-example"
-            },
-            {
-                id: 9,
-                title: "Year 1 Drama lesson",
-                content: `• Teacher revisits learning intentions and success criteria for the lesson.
-• Teacher asks students what they learned about emotions in drama. Students are encouraged to build on each other's ideas.
-• Students watch a short video. They draw/write/verbally respond to a question about the different emotions displayed in the video and explain and justify their thinking.
-• Responses are collected.`,
-                correctMatch: "Ongoing review of learning - Example"
-            },
-            {
-                id: 10,
-                title: "Year 1 Drama lesson",
-                content: `• Teacher revisits learning intentions and success criteria for the lesson.
-• Teacher gives students an exit ticket with a question that asks them to write one thing they have learned.
-• Responses are collected.`,
-                correctMatch: "Ongoing review of learning - Non-example"
-            }
-        ];
-
-        let shuffledScenarios = [...scenarios];
-        let currentScenarioIndex = 0;
-        let matchedCount = 0;
-        let draggedElement = null;
-
-        // Initialize the game
-        function initGame() {
-            shuffleScenarios();
-            renderCurrentScenario();
-            updateNavigation();
-            updateProgress();
-            setupEventListeners();
-        }
-
-        // Shuffle scenarios
-        function shuffleScenarios() {
-            shuffledScenarios = [...scenarios];
-            for (let i = shuffledScenarios.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffledScenarios[i], shuffledScenarios[j]] = [shuffledScenarios[j], shuffledScenarios[i]];
-            }
-            currentScenarioIndex = 0;
-        }
-
-        // Render current scenario
-        function renderCurrentScenario() {
-            const container = document.getElementById('scenarioContainer');
-            const scenario = shuffledScenarios[currentScenarioIndex];
-
-            if (!scenario) return;
-
-            // Create content with bullet points
-            const contentLines = scenario.content.split('\n').map(line => 
-                line.trim() ? `<li>${line.replace(/^•\s*/, '')}</li>` : ''
-            ).filter(line => line).join('');
-
-            container.innerHTML = `
-                <div class="scenario-card" draggable="true" data-scenario-id="${scenario.id}">
-                    <div class="scenario-header">
-                        <span class="scenario-number">Scenario ${scenario.id}</span>
-                    </div>
-                    <div class="scenario-title">${scenario.title}</div>
-                    <div class="scenario-content">
-                        <ul>${contentLines}</ul>
-                    </div>
-                </div>
-            `;
-
-            // Add drag event listeners to the new card
-            const card = container.querySelector('.scenario-card');
-            setupDragEvents(card);
-        }
-
-        // Setup drag events
-        function setupDragEvents(element) {
-            element.addEventListener('dragstart', handleDragStart);
-            element.addEventListener('dragend', handleDragEnd);
-        }
-
-        // Setup all event listeners
-        function setupEventListeners() {
-            // Navigation buttons
-            document.getElementById('prevBtn').addEventListener('click', () => {
-                if (currentScenarioIndex > 0) {
-                    currentScenarioIndex--;
-                    renderCurrentScenario();
-                    updateNavigation();
-                }
-            });
-
-            document.getElementById('nextBtn').addEventListener('click', () => {
-                if (currentScenarioIndex < shuffledScenarios.length - 1) {
-                    currentScenarioIndex++;
-                    renderCurrentScenario();
-                    updateNavigation();
-                }
-            });
-
-            // Shuffle button
-            document.getElementById('shuffleBtn').addEventListener('click', () => {
-                shuffleScenarios();
-                renderCurrentScenario();
-                updateNavigation();
-            });
-
-            // Drop zones
-            const dropZones = document.querySelectorAll('.drop-zone');
-            dropZones.forEach(zone => {
-                zone.addEventListener('dragover', handleDragOver);
-                zone.addEventListener('drop', handleDrop);
-                zone.addEventListener('dragenter', handleDragEnter);
-                zone.addEventListener('dragleave', handleDragLeave);
-            });
-        }
-
-        // Update navigation
-        function updateNavigation() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const currentSpan = document.getElementById('currentScenario');
-            const totalSpan = document.getElementById('totalScenarios');
-
-            prevBtn.disabled = currentScenarioIndex === 0;
-            nextBtn.disabled = currentScenarioIndex === shuffledScenarios.length - 1;
-
-            currentSpan.textContent = currentScenarioIndex + 1;
-            totalSpan.textContent = shuffledScenarios.length;
-        }
-
-        // Update progress
-        function updateProgress() {
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            const percentage = (matchedCount / scenarios.length) * 100;
-
-            progressFill.style.width = percentage + '%';
-            progressText.textContent = `${matchedCount} of ${scenarios.length} scenarios matched`;
-        }
-
-        // Drag event handlers
-        function handleDragStart(e) {
-            draggedElement = e.target;
-            e.target.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', e.target.outerHTML);
-        }
-
-        function handleDragEnd(e) {
-            e.target.classList.remove('dragging');
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-        }
-
-        function handleDragEnter(e) {
-            e.preventDefault();
-            if (!e.target.classList.contains('filled')) {
-                e.target.classList.add('highlight');
-            }
-        }
-
-        function handleDragLeave(e) {
-            e.target.classList.remove('highlight');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            e.target.classList.remove('highlight');
-
-            if (e.target.classList.contains('filled') || !draggedElement) {
-                return;
-            }
-
-            const scenarioId = parseInt(draggedElement.dataset.scenarioId);
-            const scenario = scenarios.find(s => s.id === scenarioId);
-            const targetStage = e.target.dataset.stage;
-
-            if (scenario.correctMatch === targetStage) {
-                // Correct match
-                showFeedback('Correct! Well done!', 'correct');
-
-                // Add scenario to drop zone
-                e.target.innerHTML = draggedElement.outerHTML;
-                e.target.classList.add('filled');
-
-                // Remove scenario from shuffled array
-                const index = shuffledScenarios.findIndex(s => s.id === scenarioId);
-                if (index !== -1) {
-                    shuffledScenarios.splice(index, 1);
-                }
-
-                // Adjust current index if necessary
-                if (currentScenarioIndex >= shuffledScenarios.length) {
-                    currentScenarioIndex = Math.max(0, shuffledScenarios.length - 1);
-                }
-
-                matchedCount++;
-                updateProgress();
-
-                // Check if all scenarios are matched
-                if (matchedCount === scenarios.length) {
-                    setTimeout(showCompletionMessage, 500);
-                } else {
-                    renderCurrentScenario();
-                    updateNavigation();
-                }
-            } else {
-                // Incorrect match
-                showFeedback('Incorrect. Try again!', 'incorrect');
-            }
-
-            draggedElement = null;
-        }
-
-        // Show feedback
-        function showFeedback(message, type) {
-            const feedback = document.getElementById('feedback');
-            feedback.textContent = message;
-            feedback.className = `feedback ${type} show`;
-
-            setTimeout(() => {
-                feedback.classList.remove('show');
-            }, 2000);
-        }
-
-        // Show completion message
-        function showCompletionMessage() {
-            const message = document.getElementById('completionMessage');
-            message.classList.add('show');
-
-            setTimeout(() => {
-                message.classList.remove('show');
-            }, 4000);
-        }
-
-        // Start the game
-        initGame();
-    </script>
+    
+    <script src="app.js"></script>
 </body>
 </html>
