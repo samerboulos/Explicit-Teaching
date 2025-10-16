@@ -102,22 +102,15 @@
             margin-bottom: 15px;
         }
 
-        .scenario-number {
-         //   background: #3498db;
+        .scenario-badge {
+            background: #3498db;
             color: white;
-            padding: 0px 0px;
-            border-radius: 0px;
-            font-weight: bold;
-            font-size:0em;
-        }
-
-        .scenario-title {
-     background: #3498db;
-            color: white;
-            padding: 5px 12px;
+            padding: 8px 15px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 0.9em;
+            max-width: 70%;
+            text-align: center;
         }
 
         .scenario-content {
@@ -156,14 +149,10 @@
             display: none;
         }
 
-        .scenario-card.compact .scenario-title {
-            font-size: 1em;
-            margin-top: 8px;
-        }
-
-        .scenario-card.compact .scenario-number {
+        .scenario-card.compact .scenario-badge {
             font-size: 0.8em;
-            padding: 3px 8px;
+            padding: 5px 10px;
+            max-width: 85%;
         }
 
         .expand-button {
@@ -415,6 +404,11 @@
             .drop-zones-grid {
                 grid-template-columns: 1fr;
             }
+
+            .scenario-badge {
+                max-width: 90%;
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
@@ -651,9 +645,8 @@
             container.innerHTML = `
                 <div class="scenario-card" draggable="true" data-scenario-id="${scenario.id}">
                     <div class="scenario-header">
-                        <span class="scenario-number">Scenario ${scenario.id}</span>
+                        <div class="scenario-badge">${scenario.title}</div>
                     </div>
-                    <div class="scenario-title">${scenario.title}</div>
                     <div class="scenario-content">
                         <ul>${contentLines}</ul>
                     </div>
@@ -665,8 +658,8 @@
             setupDragEvents(card);
         }
 
-        // Create compact scenario card for drop zones
-        function createCompactCard(scenario) {
+        // Create compact scenario card for drop zones - NOW SHOWS TEACHING STAGE
+        function createCompactCard(scenario, teachingStage) {
             const contentLines = scenario.content.split('\n').map(line => 
                 line.trim() ? `<li>${line.replace(/^•\s*/, '')}</li>` : ''
             ).filter(line => line).join('');
@@ -675,10 +668,10 @@
                 <div class="scenario-card compact" data-scenario-id="${scenario.id}">
                     <button class="expand-button" onclick="toggleExpand(this)"></button>
                     <div class="scenario-header">
-                        <span class="scenario-number">Scenario ${scenario.id}</span>
+                        <div class="scenario-badge">${teachingStage}</div>
                     </div>
-                    <div class="scenario-title">${scenario.title}</div>
                     <div class="scenario-content">
+                        <p style="margin-bottom: 10px; font-weight: bold; color: #2c3e50;">${scenario.title}</p>
                         <ul>${contentLines}</ul>
                     </div>
                 </div>
@@ -804,8 +797,8 @@
                 // Correct match
                 showFeedback('Correct! Well done!', 'correct');
 
-                // Add compact scenario card to drop zone
-                e.target.innerHTML = createCompactCard(scenario);
+                // Add compact scenario card to drop zone - PASS THE TEACHING STAGE
+                e.target.innerHTML = createCompactCard(scenario, targetStage);
                 e.target.classList.add('filled');
 
                 // Remove scenario from shuffled array
